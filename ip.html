@@ -1,0 +1,149 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نمایش آی پی شما</title>
+    <!-- لینک فونت Vazir از CDN -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" type="text/css">
+    <style>
+        body {
+            font-family: Vazir, 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #333;
+            font-weight: 300;
+        }
+        
+        .container {
+            background-color: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            padding: 30px;
+            width: 90%;
+            max-width: 500px;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .container:hover {
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        h1 {
+            color: #4a6baf;
+            margin-bottom: 30px;
+            font-weight: 500;
+        }
+        
+        .ip-display {
+            font-size: 28px;
+            font-weight: bold;
+            color: #2c3e50;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-family: 'Vazir', 'Courier New', monospace;
+            direction: ltr;
+        }
+        
+        .details {
+            text-align: right;
+            margin-top: 25px;
+            font-size: 14px;
+            color: #666;
+            line-height: 1.6;
+        }
+        
+        .copy-btn {
+            background-color: #4a6baf;
+            color: white;
+            border: none;
+            padding: 10px 25px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s;
+            margin-top: 15px;
+            font-family: Vazir, sans-serif;
+        }
+        
+        .copy-btn:hover {
+            background-color: #3a5a9f;
+            transform: translateY(-2px);
+        }
+        
+        .copy-btn:active {
+            transform: translateY(0);
+        }
+        
+        .animation {
+            width: 100px;
+            height: 100px;
+            margin: 0 auto 20px;
+            background: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="%234a6baf"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.41 0-8-3.59-8-8s3.59-8 8-8 8 3.59 8 8-3.59 8-8 8zm-5-9h10v2H7z"/></svg>') no-repeat center;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.1); }
+            100% { transform: scale(1); }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="animation"></div>
+        <h1>آی پی شما</h1>
+        <div class="ip-display" id="ip-address">در حال دریافت...</div>
+        <button class="copy-btn" onclick="copyToClipboard()">کپی آی پی</button>
+        <div class="details">
+            این آدرس منحصربه‌فرد دستگاه شما در اینترنت است.<br>
+            برای اتصال به شبکه اینترنت به هر دستگاه یک آدرس آی پی اختصاص داده می‌شود.
+        </div>
+    </div>
+
+    <script>
+        // دریافت آی پی کاربر
+        fetch('https://api.ipify.org?format=json')
+            .then(response => response.json())
+            .then(data => {
+                document.getElementById('ip-address').textContent = data.ip;
+            })
+            .catch(error => {
+                document.getElementById('ip-address').textContent = 'خطا در دریافت آی پی';
+                console.error('Error fetching IP:', error);
+            });
+        
+        // تابع کپی به کلیپ‌بورد
+        function copyToClipboard() {
+            const ipElement = document.getElementById('ip-address');
+            const ip = ipElement.textContent;
+            
+            if(ip === 'در حال دریافت...' || ip === 'خطا در دریافت آی پی') {
+                alert('لطفاً صبر کنید تا آی پی دریافت شود');
+                return;
+            }
+            
+            navigator.clipboard.writeText(ip)
+                .then(() => {
+                    const btn = document.querySelector('.copy-btn');
+                    btn.textContent = 'کپی شد!';
+                    setTimeout(() => {
+                        btn.textContent = 'کپی آی پی';
+                    }, 2000);
+                })
+                .catch(err => {
+                    console.error('Could not copy text: ', err);
+                });
+        }
+    </script>
+</body>
+</html>
