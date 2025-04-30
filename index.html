@@ -4,8 +4,23 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>محاسبه گر BMI</title>
-    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts.css">
-    <script src="https://unpkg.com/feather-icons"></script>
+    <style>
+        @font-face {
+            font-family: 'Vazirmatn';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
+            font-weight: 400;
+            font-style: normal;
+            font-display: swap;
+        }
+        @font-face {
+            font-family: 'Vazirmatn';
+            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2') format('woff2');
+            font-weight: 700;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    <link rel="stylesheet" href="https://unpkg.com/feather-icons">
     <style>
         :root {
             --primary: #4361ee;
@@ -43,6 +58,8 @@
             max-width: 500px;
             padding: 30px;
             transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
         }
         
         h1 {
@@ -50,6 +67,14 @@
             margin-bottom: 30px;
             color: var(--primary);
             font-weight: 700;
+            font-size: 1.5rem;
+        }
+        
+        @media (max-width: 480px) {
+            h1 {
+                font-size: 1.3rem;
+                white-space: nowrap;
+            }
         }
         
         .form-group {
@@ -108,10 +133,34 @@
             justify-content: center;
             align-items: center;
             gap: 8px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        button::after {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -60%;
+            width: 200%;
+            height: 200%;
+            background: rgba(255, 255, 255, 0.2);
+            transform: rotate(30deg);
+            transition: all 0.3s;
+        }
+        
+        button:hover::after {
+            left: 100%;
         }
         
         button:hover {
             background-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+        }
+        
+        button:active {
+            transform: translateY(0);
         }
         
         .result {
@@ -189,8 +238,20 @@
             color: #6c757d;
             display: flex;
             align-items: center;
-            justify-content: center;
+            justify-content: flex-end;
             gap: 8px;
+            text-align: right;
+        }
+        
+        @media (max-width: 480px) {
+            .bmi-info {
+                font-size: 13px;
+            }
+            
+            .bmi-info i {
+                width: 24px;
+                height: 24px;
+            }
         }
         
         .emoji {
@@ -203,8 +264,75 @@
             display: none;
         }
         
+        .nutritionist-btn {
+            background-color: var(--warning);
+            margin-top: 15px;
+            display: none;
+        }
+        
         .doctor-btn:hover {
             background-color: #c0392b;
+        }
+        
+        .nutritionist-btn:hover {
+            background-color: #e67e22;
+        }
+        
+        .alert {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            left: 20px;
+            max-width: 500px;
+            margin: 0 auto;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            z-index: 1000;
+            transform: translateY(-150%);
+            transition: transform 0.4s ease;
+        }
+        
+        .alert.show {
+            transform: translateY(0);
+        }
+        
+        .alert i {
+            color: var(--danger);
+            flex-shrink: 0;
+        }
+        
+        .alert-content {
+            flex-grow: 1;
+        }
+        
+        .alert-title {
+            font-weight: 700;
+            margin-bottom: 5px;
+            color: var(--danger);
+        }
+        
+        .alert-progress {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            height: 4px;
+            background-color: var(--danger);
+            width: 100%;
+            transform-origin: left;
+        }
+        
+        @keyframes progress {
+            0% {
+                transform: scaleX(1);
+            }
+            100% {
+                transform: scaleX(0);
+            }
         }
     </style>
 </head>
@@ -216,13 +344,13 @@
             <label for="height">قد (سانتی‌متر)</label>
             <div class="input-wrapper">
                 <i data-feather="ruler"></i>
-                <input type="number" id="height" placeholder="مثال: 175">
+                <input type="number" id="height" placeholder="مثال: 175" max="300">
             </div>
         </div>
         
         <div class="form-group">
             <label for="weight">وزن (کیلوگرم)</label>
-            <input type="number" id="weight" placeholder="مثال: 70">
+            <input type="number" id="weight" placeholder="مثال: 70" max="200">
         </div>
         
         <button id="calculate-btn">
@@ -251,15 +379,29 @@
             <div id="bmi-message"></div>
             
             <button class="doctor-btn" id="doctor-btn">
-                <i data-feather="calendar"></i>
-                <span>رزرو نوبت دکتر تغذیه</span>
+                <i data-feather="heart"></i>
+                <span>رزرو نوبت پزشک</span>
+            </button>
+            
+            <button class="nutritionist-btn" id="nutritionist-btn">
+                <i data-feather="users"></i>
+                <span>رزرو نوبت متخصص تغذیه</span>
             </button>
             
             <div class="bmi-info">
-                <i data-feather="info" width="18" height="18"></i>
+                <i data-feather="info" width="20" height="20"></i>
                 <span>شاخص توده بدنی (BMI) معیاری برای ارزیابی وضعیت وزن بدن است.</span>
             </div>
         </div>
+    </div>
+
+    <div class="alert" id="alert">
+        <i data-feather="alert-triangle" width="24" height="24"></i>
+        <div class="alert-content">
+            <div class="alert-title">خطا در ورودی</div>
+            <div class="alert-message" id="alert-message"></div>
+        </div>
+        <div class="alert-progress" id="alert-progress"></div>
     </div>
 
     <script>
@@ -277,19 +419,44 @@
             const bmiMessage = document.getElementById('bmi-message');
             const loadingDiv = document.getElementById('loading');
             const doctorBtn = document.getElementById('doctor-btn');
+            const nutritionistBtn = document.getElementById('nutritionist-btn');
+            const alertDiv = document.getElementById('alert');
+            const alertMessage = document.getElementById('alert-message');
+            const alertProgress = document.getElementById('alert-progress');
+            
+            function showAlert(message, isCritical = false) {
+                alertMessage.textContent = message;
+                alertDiv.classList.add('show');
+                alertProgress.style.animation = 'progress 5s linear forwards';
+                
+                setTimeout(() => {
+                    alertDiv.classList.remove('show');
+                }, 5000);
+            }
             
             calculateBtn.addEventListener('click', function() {
                 const height = parseFloat(heightInput.value);
                 const weight = parseFloat(weightInput.value);
                 
                 if (isNaN(height) || isNaN(weight) || height <= 0 || weight <= 0) {
-                    alert('لطفاً مقادیر معتبر برای قد و وزن وارد کنید.');
+                    showAlert('لطفاً مقادیر معتبر برای قد و وزن وارد کنید.');
+                    return;
+                }
+                
+                if (height > 300) {
+                    showAlert('کاربر محترم، اگه عددی که وارد کردی واقعی هست، اوضاعت خیلی خرابه! برو دکتر!', true);
+                    return;
+                }
+                
+                if (weight > 200) {
+                    showAlert('کاربر محترم، اگه عددی که وارد کردی واقعی هست، اوضاعت خیلی خرابه! برو دکتر!', true);
                     return;
                 }
                 
                 // Show loading skeleton
                 resultDiv.style.display = 'none';
                 doctorBtn.style.display = 'none';
+                nutritionistBtn.style.display = 'none';
                 loadingDiv.style.display = 'block';
                 
                 // Simulate loading
@@ -312,7 +479,7 @@
                 bmiValue.textContent = roundedBMI;
                 
                 // Determine BMI category and set colors
-                let category, color, message, emoji, showDoctorBtn;
+                let category, color, message, emoji, showDoctorBtn, showNutritionistBtn;
                 
                 if (roundedBMI < 18.5) {
                     category = "کمبود وزن";
@@ -320,36 +487,42 @@
                     message = "شما کمبود وزن دارید. بهتر است با یک متخصص تغذیه مشورت کنید.";
                     emoji = "😟";
                     showDoctorBtn = false;
+                    showNutritionistBtn = true;
                 } else if (roundedBMI >= 18.5 && roundedBMI < 23) {
                     category = "وزن طبیعی (مطلوب)";
                     color = "var(--success)";
                     message = "وزن شما در محدوده بسیار خوبی است. همین روال را ادامه دهید!";
                     emoji = "😊";
                     showDoctorBtn = false;
+                    showNutritionistBtn = false;
                 } else if (roundedBMI >= 23 && roundedBMI < 25) {
                     category = "وزن طبیعی";
                     color = "var(--success)";
                     message = "وزن شما در محدوده طبیعی است. مراقب تغذیه خود باشید.";
                     emoji = "🙂";
                     showDoctorBtn = false;
+                    showNutritionistBtn = false;
                 } else if (roundedBMI >= 25 && roundedBMI < 30) {
                     category = "اضافه وزن";
                     color = "var(--warning)";
                     message = "شما اضافه وزن دارید. بهتر است فعالیت بدنی خود را افزایش دهید.";
                     emoji = "😐";
                     showDoctorBtn = false;
+                    showNutritionistBtn = true;
                 } else if (roundedBMI >= 30 && roundedBMI < 35) {
                     category = "چاقی درجه ۱";
                     color = "var(--danger)";
                     message = "شما در دسته چاقی درجه ۱ قرار دارید. بهتر است با پزشک مشورت کنید.";
                     emoji = "😕";
                     showDoctorBtn = true;
+                    showNutritionistBtn = true;
                 } else {
                     category = "چاقی درجه ۲";
                     color = "var(--danger)";
                     message = "شما در دسته چاقی درجه ۲ قرار دارید. حتماً با پزشک مشورت کنید.";
                     emoji = "😨";
                     showDoctorBtn = true;
+                    showNutritionistBtn = true;
                 }
                 
                 // Update UI
@@ -368,6 +541,12 @@
                     doctorBtn.style.display = "none";
                 }
                 
+                if (showNutritionistBtn) {
+                    nutritionistBtn.style.display = "flex";
+                } else {
+                    nutritionistBtn.style.display = "none";
+                }
+                
                 // Update progress bar (BMI range: 15 to 40)
                 const progressPercentage = Math.min(Math.max((roundedBMI - 15) / (40 - 15) * 100, 0), 100);
                 progressBar.style.width = `${progressPercentage}%`;
@@ -377,7 +556,11 @@
             }
             
             doctorBtn.addEventListener('click', function() {
-                alert("سیستم رزرو نوبت به زودی راه اندازی خواهد شد");
+                alert("سیستم رزرو نوبت پزشک به زودی راه اندازی خواهد شد");
+            });
+            
+            nutritionistBtn.addEventListener('click', function() {
+                alert("سیستم رزرو نوبت متخصص تغذیه به زودی راه اندازی خواهد شد");
             });
         });
     </script>
