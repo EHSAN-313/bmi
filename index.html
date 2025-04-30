@@ -3,282 +3,268 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محاسبه BMI</title>
+    <title>محاسبه‌گر BMI</title>
+    <!-- فونت وزیر از CDN -->
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts.css" rel="stylesheet">
+    <!-- آیکون‌های Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
-        @font-face {
-            font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Regular.woff2') format('woff2');
-            font-weight: 400;
-            font-style: normal;
-            font-display: swap;
-        }
-        @font-face {
-            font-family: 'Vazirmatn';
-            src: url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/fonts/webfonts/Vazirmatn-Bold.woff2') format('woff2');
-            font-weight: 700;
-            font-style: normal;
-            font-display: swap;
-        }
-        
-        :root {
-            --primary: #4361ee;
-            --secondary: #3f37c9;
-            --success: #2ecc71;
-            --danger: #e74c3c;
-            --warning: #f39c12;
-            --light: #f8f9fa;
-            --dark: #212529;
-        }
-        
         * {
+            font-family: Vazirmatn, sans-serif;
+            box-sizing: border-box;
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
-            font-family: Vazirmatn, sans-serif;
         }
-        
+
         body {
-            background-color: #f5f7fa;
-            color: var(--dark);
+            background-color: #f8f9fa;
+            color: #212529;
+            line-height: 1.8;
+            padding: 20px;
             min-height: 100vh;
             display: flex;
             justify-content: center;
             align-items: center;
-            padding: 20px;
         }
-        
+
         .container {
-            background-color: white;
-            border-radius: 16px;
-            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            max-width: 450px;
             width: 100%;
-            max-width: 500px;
-            padding: 25px;
+            background: #fff;
+            padding: 2rem;
+            border-radius: 16px;
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.08);
+            border: 1px solid rgba(255, 255, 255, 0.2);
         }
-        
+
         h1 {
             text-align: center;
-            margin-bottom: 25px;
-            color: var(--primary);
-            font-size: 1.4rem;
+            margin-bottom: 1.5rem;
+            color: #2b2d42;
+            font-weight: 700;
+            font-size: 1.5rem;
         }
-        
-        .form-group {
-            margin-bottom: 18px;
+
+        h1 i {
+            margin-left: 10px;
+            color: #4361ee;
         }
-        
+
+        .input-group {
+            margin-bottom: 1.5rem;
+        }
+
         label {
             display: block;
-            margin-bottom: 6px;
+            margin-bottom: 0.5rem;
             font-weight: 500;
+            color: #4a4e69;
+            font-size: 0.9rem;
         }
-        
+
         input {
             width: 100%;
-            padding: 12px 15px;
-            border: 1px solid #ddd;
+            padding: 0.8rem 1rem;
+            border: 1px solid #dee2e6;
             border-radius: 8px;
-            font-size: 16px;
+            font-size: 1rem;
+            transition: all 0.3s ease;
         }
-        
+
         input:focus {
+            border-color: #4361ee;
             outline: none;
-            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(67, 97, 238, 0.1);
         }
-        
+
         button {
             width: 100%;
-            padding: 14px;
-            background-color: var(--primary);
-            color: white;
+            padding: 0.8rem;
             border: none;
             border-radius: 8px;
-            font-size: 16px;
-            margin-top: 10px;
+            font-size: 1rem;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            font-weight: 500;
         }
-        
-        button:hover {
-            background-color: var(--secondary);
+
+        .btn-calculate {
+            background-color: #4361ee;
+            color: white;
+            margin-top: 0.5rem;
         }
-        
-        .result {
-            margin-top: 25px;
-            padding: 20px;
-            border-radius: 8px;
+
+        .btn-calculate:hover {
+            background-color: #3a56d4;
+            transform: translateY(-2px);
+        }
+
+        .btn-doctor {
+            background-color: #f72585;
+            color: white;
+            margin-top: 1.5rem;
+        }
+
+        .btn-doctor:hover {
+            background-color: #e5177b;
+            transform: translateY(-2px);
+        }
+
+        #result {
+            margin-top: 2rem;
             text-align: center;
-            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        #bmiValue {
+            font-size: 1.8rem;
+            font-weight: 700;
+            margin: 1rem 0;
+        }
+
+        #bmiCategory {
+            font-size: 1.1rem;
+            margin-bottom: 1.5rem;
+            padding: 0.5rem;
+            border-radius: 8px;
             background-color: #f8f9fa;
         }
-        
-        .bmi-value {
-            font-size: 2.5rem;
-            font-weight: bold;
-            margin: 10px 0;
-        }
-        
-        .bmi-category {
-            font-size: 1.1rem;
-            margin-bottom: 15px;
-            display: flex;
-            justify-content: center;
-            gap: 8px;
-        }
-        
-        .bmi-message {
-            margin-bottom: 15px;
-        }
-        
-        .action-btn {
+
+        .hidden {
             display: none;
-            width: 100%;
-            margin-top: 10px;
         }
-        
-        .doctor-btn {
-            background-color: var(--danger);
+
+        /* حالت‌های مختلف BMI */
+        .underweight {
+            color: #ff9e00;
+            background-color: #fff3e0 !important;
         }
-        
-        .nutritionist-btn {
-            background-color: var(--warning);
+
+        .normal {
+            color: #2ecc71;
+            background-color: #e8f5e9 !important;
+        }
+
+        .overweight {
+            color: #e67e22;
+            background-color: #fff3e0 !important;
+        }
+
+        .obese-1 {
+            color: #d35400;
+            background-color: #ffebee !important;
+        }
+
+        .obese-2 {
+            color: #c0392b;
+            background-color: #ffebee !important;
+        }
+
+        /* رسپانسیو برای موبایل */
+        @media (max-width: 480px) {
+            .container {
+                padding: 1.5rem;
+                border-radius: 12px;
+            }
+            
+            h1 {
+                font-size: 1.3rem;
+            }
         }
     </style>
 </head>
 <body>
     <div class="container">
-        <h1>محاسبه شاخص توده بدنی (BMI)</h1>
+        <h1><i class="fas fa-calculator"></i> محاسبه‌گر شاخص توده بدنی</h1>
         
-        <div class="form-group">
-            <label for="height">قد (سانتی‌متر)</label>
-            <input type="number" id="height" placeholder="مثال: 175" max="300">
-        </div>
-        
-        <div class="form-group">
-            <label for="weight">وزن (کیلوگرم)</label>
-            <input type="number" id="weight" placeholder="مثال: 70" max="200">
-        </div>
-        
-        <button id="calculate-btn">محاسبه BMI</button>
-        
-        <div class="result" id="result">
-            <div class="bmi-value" id="bmi-value">0</div>
-            <div class="bmi-category" id="bmi-category"></div>
-            <div class="bmi-message" id="bmi-message"></div>
+        <form id="bmiForm">
+            <div class="input-group">
+                <label for="weight"><i class="fas fa-weight"></i> وزن (کیلوگرم):</label>
+                <input type="number" id="weight" placeholder="مثال: 70" min="0" max="200" required>
+            </div>
             
-            <button class="action-btn doctor-btn" id="doctor-btn">
-                رزرو نوبت پزشک
+            <div class="input-group">
+                <label for="height"><i class="fas fa-ruler-vertical"></i> قد (سانتی‌متر):</label>
+                <input type="number" id="height" placeholder="مثال: 175" min="0" max="300" required>
+            </div>
+            
+            <button type="submit" class="btn-calculate">
+                <i class="fas fa-calculator"></i> محاسبه BMI
             </button>
-            
-            <button class="action-btn nutritionist-btn" id="nutritionist-btn">
-                رزرو نوبت متخصص تغذیه
+        </form>
+        
+        <div id="result" class="hidden">
+            <h2><i class="fas fa-chart-line"></i> نتیجه محاسبه:</h2>
+            <p id="bmiValue"></p>
+            <p id="bmiCategory"></p>
+            <button id="doctorBtn" class="btn-doctor hidden">
+                <i class="fas fa-calendar-check"></i> رزرو نوبت دکتر تغذیه
             </button>
         </div>
     </div>
 
     <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const calculateBtn = document.getElementById('calculate-btn');
-            const heightInput = document.getElementById('height');
-            const weightInput = document.getElementById('weight');
+        document.getElementById('bmiForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const weight = parseFloat(document.getElementById('weight').value);
+            const height = parseFloat(document.getElementById('height').value) / 100; // تبدیل به متر
+            
+            if (isNaN(weight) || isNaN(height) || height === 0) {
+                alert("لطفاً مقادیر معتبر وارد کنید!");
+                return;
+            }
+            
+            const bmi = (weight / (height * height)).toFixed(1);
+            
             const resultDiv = document.getElementById('result');
-            const bmiValue = document.getElementById('bmi-value');
-            const bmiCategory = document.getElementById('bmi-category');
-            const bmiMessage = document.getElementById('bmi-message');
-            const doctorBtn = document.getElementById('doctor-btn');
-            const nutritionistBtn = document.getElementById('nutritionist-btn');
+            const bmiValue = document.getElementById('bmiValue');
+            const bmiCategory = document.getElementById('bmiCategory');
+            const doctorBtn = document.getElementById('doctorBtn');
             
-            // اعتبارسنجی ورودی‌ها
-            function validateInputs(height, weight) {
-                if (isNaN(height) || isNaN(weight) {
-                    alert('لطفاً مقادیر معتبر وارد کنید');
-                    return false;
-                }
-                
-                if (height <= 0 || weight <= 0) {
-                    alert('قد و وزن باید بزرگتر از صفر باشد');
-                    return false;
-                }
-                
-                if (height > 300) {
-                    alert('عدد وارد شده برای قد بیشتر از مقدار معین است');
-                    return false;
-                }
-                
-                if (weight > 200) {
-                    alert('عدد وارد شده برای وزن بیشتر از مقدار معین است');
-                    return false;
-                }
-                
-                return true;
+            resultDiv.classList.remove('hidden');
+            bmiValue.textContent = `BMI: ${bmi}`;
+            
+            let category = '';
+            let categoryClass = '';
+            
+            if (bmi < 18.5) {
+                category = 'کمبود وزن';
+                categoryClass = 'underweight';
+                doctorBtn.classList.remove('hidden');
+            } else if (bmi >= 18.5 && bmi < 25) {
+                category = 'وزن طبیعی';
+                categoryClass = 'normal';
+                doctorBtn.classList.add('hidden');
+            } else if (bmi >= 25 && bmi < 30) {
+                category = 'اضافه وزن';
+                categoryClass = 'overweight';
+                doctorBtn.classList.remove('hidden');
+            } else if (bmi >= 30 && bmi < 35) {
+                category = 'چاقی درجه ۱';
+                categoryClass = 'obese-1';
+                doctorBtn.classList.remove('hidden');
+            } else {
+                category = 'چاقی درجه ۲';
+                categoryClass = 'obese-2';
+                doctorBtn.classList.remove('hidden');
             }
             
-            // محاسبه BMI
-            function calculateBMI(height, weight) {
-                const heightInMeters = height / 100;
-                return (weight / (heightInMeters * heightInMeters)).toFixed(1);
-            }
-            
-            // نمایش نتیجه
-            function showResult(bmi) {
-                let category, color, message, showDoctor = false, showNutritionist = false;
-                
-                if (bmi < 18.5) {
-                    category = "کمبود وزن";
-                    color = "var(--warning)";
-                    message = "شما کمبود وزن دارید. بهتر است با متخصص تغذیه مشورت کنید.";
-                    showNutritionist = true;
-                } 
-                else if (bmi < 25) {
-                    category = "وزن طبیعی";
-                    color = "var(--success)";
-                    message = "وزن شما در محدوده طبیعی است.";
-                } 
-                else if (bmi < 30) {
-                    category = "اضافه وزن";
-                    color = "var(--warning)";
-                    message = "شما اضافه وزن دارید. بهتر است با متخصص تغذیه مشورت کنید.";
-                    showNutritionist = true;
-                } 
-                else {
-                    category = "چاقی";
-                    color = "var(--danger)";
-                    message = "شما در محدوده چاقی هستید. بهتر است با پزشک مشورت کنید.";
-                    showDoctor = true;
-                    showNutritionist = true;
-                }
-                
-                bmiValue.textContent = bmi;
-                bmiValue.style.color = color;
-                bmiCategory.textContent = category;
-                bmiCategory.style.color = color;
-                bmiMessage.textContent = message;
-                
-                doctorBtn.style.display = showDoctor ? "block" : "none";
-                nutritionistBtn.style.display = showNutritionist ? "block" : "none";
-                
-                resultDiv.style.display = "block";
-            }
-            
-            // رویداد کلیک دکمه محاسبه
-            calculateBtn.addEventListener('click', function() {
-                const height = parseFloat(heightInput.value);
-                const weight = parseFloat(weightInput.value);
-                
-                if (validateInputs(height, weight)) {
-                    const bmi = calculateBMI(height, weight);
-                    showResult(bmi);
-                }
-            });
-            
-            // رویداد کلیک دکمه‌های عمل
-            doctorBtn.addEventListener('click', function() {
-                alert("امکان رزرو نوبت پزشک به زودی فعال می‌شود");
-            });
-            
-            nutritionistBtn.addEventListener('click', function() {
-                alert("امکان رزرو نوبت متخصص تغذیه به زودی فعال می‌شود");
-            });
+            bmiCategory.textContent = `${category}`;
+            bmiCategory.className = categoryClass;
+        });
+
+        document.getElementById('doctorBtn').addEventListener('click', function() {
+            alert('برای رزرو نوبت دکتر تغذیه، به صفحه پزشکان مراجعه کنید.');
         });
     </script>
 </body>
