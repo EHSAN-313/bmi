@@ -137,22 +137,6 @@
             overflow: hidden;
         }
         
-        button::after {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -60%;
-            width: 200%;
-            height: 200%;
-            background: rgba(255, 255, 255, 0.2);
-            transform: rotate(30deg);
-            transition: all 0.3s;
-        }
-        
-        button:hover::after {
-            left: 100%;
-        }
-        
         button:hover {
             background-color: var(--secondary);
             transform: translateY(-2px);
@@ -161,6 +145,7 @@
         
         button:active {
             transform: translateY(0);
+            box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
         }
         
         .result {
@@ -427,6 +412,8 @@
             function showAlert(message, isCritical = false) {
                 alertMessage.textContent = message;
                 alertDiv.classList.add('show');
+                alertProgress.style.animation = 'none';
+                void alertProgress.offsetWidth; // Trigger reflow
                 alertProgress.style.animation = 'progress 5s linear forwards';
                 
                 setTimeout(() => {
@@ -555,12 +542,20 @@
                 feather.replace();
             }
             
-            doctorBtn.addEventListener('click', function() {
+            // Fix for button clicks
+            doctorBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
                 alert("سیستم رزرو نوبت پزشک به زودی راه اندازی خواهد شد");
             });
             
-            nutritionistBtn.addEventListener('click', function() {
+            nutritionistBtn.addEventListener('click', function(e) {
+                e.stopPropagation();
                 alert("سیستم رزرو نوبت متخصص تغذیه به زودی راه اندازی خواهد شد");
+            });
+            
+            // Prevent form submission
+            document.querySelector('form')?.addEventListener('submit', function(e) {
+                e.preventDefault();
             });
         });
     </script>
