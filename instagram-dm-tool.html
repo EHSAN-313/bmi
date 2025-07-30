@@ -1,0 +1,2026 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instagram DM Automation Tool - Professional Dashboard</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-color: #e1306c;
+            --secondary-color: #405de6;
+            --success-color: #4caf50;
+            --warning-color: #ff9800;
+            --danger-color: #f44336;
+            --dark-color: #2c3e50;
+            --light-color: #ecf0f1;
+            --border-color: #e0e6ed;
+            --text-color: #2c3e50;
+            --text-muted: #6c757d;
+            --bg-color: #f8f9fa;
+            --white: #ffffff;
+            --shadow: 0 2px 10px rgba(0,0,0,0.1);
+            --shadow-hover: 0 4px 20px rgba(0,0,0,0.15);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            padding: 1rem 2rem;
+            box-shadow: var(--shadow);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar h1 {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-weight: 600;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+
+        .dashboard-grid {
+            display: grid;
+            grid-template-columns: 300px 1fr;
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+
+        .sidebar {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            height: fit-content;
+            position: sticky;
+            top: 100px;
+        }
+
+        .sidebar h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+
+        .nav-item {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            margin-bottom: 0.5rem;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            border: none;
+            background: none;
+            width: 100%;
+            text-align: left;
+            font-size: 0.9rem;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+            transform: translateX(5px);
+        }
+
+        .main-content {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 2rem;
+            box-shadow: var(--shadow);
+            min-height: 600px;
+        }
+
+        .section {
+            display: none;
+        }
+
+        .section.active {
+            display: block;
+        }
+
+        .section h2 {
+            margin-bottom: 1.5rem;
+            color: var(--dark-color);
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            margin-bottom: 1.5rem;
+            transition: all 0.3s ease;
+        }
+
+        .card:hover {
+            box-shadow: var(--shadow-hover);
+        }
+
+        .card h3 {
+            margin-bottom: 1rem;
+            color: var(--dark-color);
+            font-weight: 600;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 500;
+            color: var(--dark-color);
+        }
+
+        .form-control {
+            width: 100%;
+            padding: 0.75rem;
+            border: 2px solid var(--border-color);
+            border-radius: 8px;
+            font-size: 0.9rem;
+            transition: all 0.3s ease;
+        }
+
+        .form-control:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 0 3px rgba(225, 48, 108, 0.1);
+        }
+
+        .btn {
+            padding: 0.75rem 1.5rem;
+            border: none;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            text-decoration: none;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .btn-success {
+            background: var(--success-color);
+            color: white;
+        }
+
+        .btn-warning {
+            background: var(--warning-color);
+            color: white;
+        }
+
+        .btn-danger {
+            background: var(--danger-color);
+            color: white;
+        }
+
+        .btn-secondary {
+            background: var(--text-muted);
+            color: white;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--white);
+            border-radius: 12px;
+            padding: 1.5rem;
+            box-shadow: var(--shadow);
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-hover);
+        }
+
+        .stat-card .icon {
+            font-size: 2.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .stat-card .number {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-card .label {
+            color: var(--text-muted);
+            font-size: 0.9rem;
+        }
+
+        .stat-card.primary { color: var(--primary-color); }
+        .stat-card.success { color: var(--success-color); }
+        .stat-card.warning { color: var(--warning-color); }
+        .stat-card.danger { color: var(--danger-color); }
+
+        .table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1rem;
+        }
+
+        .table th,
+        .table td {
+            padding: 0.75rem;
+            text-align: left;
+            border-bottom: 1px solid var(--border-color);
+        }
+
+        .table th {
+            background: var(--light-color);
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+
+        .table tr:hover {
+            background: var(--light-color);
+        }
+
+        .badge {
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.75rem;
+            font-weight: 500;
+        }
+
+        .badge-success { background: var(--success-color); color: white; }
+        .badge-warning { background: var(--warning-color); color: white; }
+        .badge-danger { background: var(--danger-color); color: white; }
+        .badge-secondary { background: var(--text-muted); color: white; }
+
+        .progress {
+            background: var(--light-color);
+            border-radius: 4px;
+            height: 8px;
+            overflow: hidden;
+            margin-top: 0.5rem;
+        }
+
+        .progress-bar {
+            background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+            height: 100%;
+            transition: width 0.3s ease;
+        }
+
+        .alert {
+            padding: 1rem;
+            border-radius: 8px;
+            margin-bottom: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .alert-warning {
+            background: #fff3cd;
+            border: 1px solid #ffecb5;
+            color: #856404;
+        }
+
+        .alert-info {
+            background: #d1ecf1;
+            border: 1px solid #bee5eb;
+            color: #0c5460;
+        }
+
+        .modal {
+            display: none;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.5);
+        }
+
+        .modal-content {
+            background-color: var(--white);
+            margin: 5% auto;
+            padding: 2rem;
+            border-radius: 12px;
+            width: 90%;
+            max-width: 600px;
+            box-shadow: var(--shadow-hover);
+        }
+
+        .close {
+            color: var(--text-muted);
+            float: right;
+            font-size: 1.5rem;
+            cursor: pointer;
+        }
+
+        .close:hover {
+            color: var(--dark-color);
+        }
+
+        .file-upload {
+            border: 2px dashed var(--border-color);
+            border-radius: 8px;
+            padding: 2rem;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .file-upload:hover {
+            border-color: var(--primary-color);
+            background: rgba(225, 48, 108, 0.05);
+        }
+
+        .schedule-item {
+            background: var(--light-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1rem;
+            display: flex;
+            justify-content: between;
+            align-items: center;
+        }
+
+        .status-indicator {
+            width: 10px;
+            height: 10px;
+            border-radius: 50%;
+            display: inline-block;
+            margin-right: 0.5rem;
+        }
+
+        .status-online { background: var(--success-color); }
+        .status-offline { background: var(--danger-color); }
+        .status-pending { background: var(--warning-color); }
+
+        @media (max-width: 768px) {
+            .dashboard-grid {
+                grid-template-columns: 1fr;
+                gap: 1rem;
+            }
+            
+            .sidebar {
+                position: static;
+            }
+            
+            .container {
+                padding: 1rem;
+            }
+            
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .connection-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            margin-bottom: 1rem;
+            padding: 0.75rem;
+            border-radius: 8px;
+            background: var(--light-color);
+        }
+
+        .template-preview {
+            background: var(--light-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-top: 1rem;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .variable-tag {
+            display: inline-block;
+            background: var(--primary-color);
+            color: white;
+            padding: 0.25rem 0.5rem;
+            border-radius: 4px;
+            font-size: 0.8rem;
+            margin: 0.25rem;
+            cursor: pointer;
+        }
+
+        .log-entry {
+            padding: 0.75rem;
+            border-left: 4px solid;
+            margin-bottom: 0.5rem;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .log-success { border-color: var(--success-color); background: rgba(76, 175, 80, 0.1); }
+        .log-error { border-color: var(--danger-color); background: rgba(244, 67, 54, 0.1); }
+        .log-info { border-color: var(--secondary-color); background: rgba(64, 93, 230, 0.1); }
+    </style>
+</head>
+<body>
+    <nav class="navbar">
+        <h1><i class="fab fa-instagram"></i> Instagram DM Automation Tool</h1>
+    </nav>
+
+    <div class="container">
+        <div class="dashboard-grid">
+            <!-- Sidebar Navigation -->
+            <div class="sidebar">
+                <h3>Navigation</h3>
+                <button class="nav-item active" data-section="dashboard">
+                    <i class="fas fa-tachometer-alt"></i>
+                    Dashboard
+                </button>
+                <button class="nav-item" data-section="authentication">
+                    <i class="fas fa-key"></i>
+                    Authentication
+                </button>
+                <button class="nav-item" data-section="audience">
+                    <i class="fas fa-users"></i>
+                    Target Audience
+                </button>
+                <button class="nav-item" data-section="templates">
+                    <i class="fas fa-comment-dots"></i>
+                    Message Templates
+                </button>
+                <button class="nav-item" data-section="scheduling">
+                    <i class="fas fa-clock"></i>
+                    Scheduling & Rules
+                </button>
+                <button class="nav-item" data-section="automation">
+                    <i class="fas fa-robot"></i>
+                    Auto Replies
+                </button>
+                <button class="nav-item" data-section="campaigns">
+                    <i class="fas fa-paper-plane"></i>
+                    Campaigns
+                </button>
+                <button class="nav-item" data-section="analytics">
+                    <i class="fas fa-chart-bar"></i>
+                    Analytics & Logs
+                </button>
+                <button class="nav-item" data-section="accounts">
+                    <i class="fas fa-user-cog"></i>
+                    Account Management
+                </button>
+                <button class="nav-item" data-section="settings">
+                    <i class="fas fa-cog"></i>
+                    Settings
+                </button>
+            </div>
+
+            <!-- Main Content -->
+            <div class="main-content">
+                <!-- Dashboard Section -->
+                <div class="section active" id="dashboard">
+                    <h2><i class="fas fa-tachometer-alt"></i> Dashboard Overview</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card primary">
+                            <div class="icon"><i class="fas fa-paper-plane"></i></div>
+                            <div class="number" id="totalSent">0</div>
+                            <div class="label">Messages Sent Today</div>
+                        </div>
+                        <div class="stat-card success">
+                            <div class="icon"><i class="fas fa-check-circle"></i></div>
+                            <div class="number" id="successRate">0%</div>
+                            <div class="label">Success Rate</div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="icon"><i class="fas fa-clock"></i></div>
+                            <div class="number" id="pending">0</div>
+                            <div class="label">Pending Messages</div>
+                        </div>
+                        <div class="stat-card danger">
+                            <div class="icon"><i class="fas fa-exclamation-triangle"></i></div>
+                            <div class="number" id="failed">0</div>
+                            <div class="label">Failed Messages</div>
+                        </div>
+                    </div>
+
+                    <div class="alert alert-warning">
+                        <i class="fas fa-exclamation-triangle"></i>
+                        <strong>Important:</strong> Please ensure you comply with Instagram's terms of service and messaging limits to avoid account restrictions.
+                    </div>
+
+                    <div class="card">
+                        <h3>Recent Activity</h3>
+                        <div id="recentActivity">
+                            <div class="log-entry log-info">
+                                <strong>System:</strong> Instagram DM Tool initialized successfully
+                                <span style="float: right; color: var(--text-muted);">Just now</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Authentication Section -->
+                <div class="section" id="authentication">
+                    <h2><i class="fas fa-key"></i> Instagram Authentication</h2>
+                    
+                    <div class="connection-status">
+                        <span class="status-indicator status-offline"></span>
+                        <span>Status: <strong id="connectionStatus">Disconnected</strong></span>
+                    </div>
+
+                    <div class="alert alert-info">
+                        <i class="fas fa-info-circle"></i>
+                        Choose your preferred authentication method. Session cookies are recommended for better security.
+                    </div>
+
+                    <div class="card">
+                        <h3>Authentication Methods</h3>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="authMethod" value="session" checked>
+                                Session Cookie (Recommended)
+                            </label>
+                            <small class="text-muted">Extract session cookie from browser for secure authentication</small>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="authMethod" value="token">
+                                Access Token
+                            </label>
+                            <small class="text-muted">Use Instagram API access token</small>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="radio" name="authMethod" value="proxy">
+                                API Proxy
+                            </label>
+                            <small class="text-muted">Connect through third-party API service</small>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Authentication Details</h3>
+                        <div class="form-group">
+                            <label for="sessionData">Session Data / Token</label>
+                            <textarea id="sessionData" class="form-control" rows="4" placeholder="Paste your session cookie, access token, or API credentials here..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="username">Instagram Username</label>
+                            <input type="text" id="username" class="form-control" placeholder="your_instagram_username">
+                        </div>
+                        <div class="form-group">
+                            <label for="proxyUrl">Proxy URL (Optional)</label>
+                            <input type="url" id="proxyUrl" class="form-control" placeholder="https://api-proxy.example.com">
+                        </div>
+                        <button class="btn btn-primary" onclick="authenticateInstagram()">
+                            <i class="fas fa-plug"></i> Connect to Instagram
+                        </button>
+                        <button class="btn btn-secondary" onclick="testConnection()">
+                            <i class="fas fa-check"></i> Test Connection
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Target Audience Section -->
+                <div class="section" id="audience">
+                    <h2><i class="fas fa-users"></i> Target Audience Management</h2>
+                    
+                    <div class="card">
+                        <h3>Add Target Users</h3>
+                        <div class="form-group">
+                            <label>Method</label>
+                            <select id="audienceMethod" class="form-control" onchange="toggleAudienceMethod()">
+                                <option value="manual">Manual Input</option>
+                                <option value="csv">CSV Upload</option>
+                                <option value="followers">Extract Followers</option>
+                                <option value="likers">Post Likers</option>
+                                <option value="commenters">Post Commenters</option>
+                                <option value="story_viewers">Story Viewers</option>
+                            </select>
+                        </div>
+
+                        <div id="manualInput">
+                            <div class="form-group">
+                                <label for="usernames">Usernames (one per line)</label>
+                                <textarea id="usernames" class="form-control" rows="6" placeholder="username1&#10;username2&#10;username3"></textarea>
+                            </div>
+                        </div>
+
+                        <div id="csvUpload" style="display: none;">
+                            <div class="form-group">
+                                <label>CSV File Upload</label>
+                                <div class="file-upload" onclick="document.getElementById('csvFile').click()">
+                                    <i class="fas fa-cloud-upload-alt" style="font-size: 2rem; color: var(--text-muted);"></i>
+                                    <p>Click to upload CSV file or drag and drop</p>
+                                    <small>Expected format: username, full_name, followers_count</small>
+                                </div>
+                                <input type="file" id="csvFile" accept=".csv" style="display: none;" onchange="handleCSVUpload(this)">
+                            </div>
+                        </div>
+
+                        <div id="extractionSettings" style="display: none;">
+                            <div class="form-group">
+                                <label for="targetPost">Post URL (for likers/commenters)</label>
+                                <input type="url" id="targetPost" class="form-control" placeholder="https://instagram.com/p/ABC123...">
+                            </div>
+                            <div class="form-group">
+                                <label for="extractLimit">Maximum Users to Extract</label>
+                                <input type="number" id="extractLimit" class="form-control" value="100" min="1" max="1000">
+                            </div>
+                        </div>
+
+                        <button class="btn btn-primary" onclick="addAudience()">
+                            <i class="fas fa-plus"></i> Add Audience
+                        </button>
+                        <button class="btn btn-warning" onclick="validateAudience()">
+                            <i class="fas fa-check-double"></i> Validate Users
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Current Audience <span id="audienceCount" class="badge badge-secondary">0</span></h3>
+                        <div style="max-height: 400px; overflow-y: auto;">
+                            <table class="table">
+                                <thead>
+                                    <tr>
+                                        <th>Username</th>
+                                        <th>Status</th>
+                                        <th>Last Contact</th>
+                                        <th>Actions</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="audienceList">
+                                    <tr>
+                                        <td colspan="4" style="text-align: center; color: var(--text-muted);">
+                                            No users added yet
+                                        </td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Message Templates Section -->
+                <div class="section" id="templates">
+                    <h2><i class="fas fa-comment-dots"></i> Message Templates</h2>
+                    
+                    <div class="card">
+                        <h3>Create New Template</h3>
+                        <div class="form-group">
+                            <label for="templateName">Template Name</label>
+                            <input type="text" id="templateName" class="form-control" placeholder="Welcome Message">
+                        </div>
+                        <div class="form-group">
+                            <label for="templateMessage">Message Content</label>
+                            <textarea id="templateMessage" class="form-control" rows="6" placeholder="Hi {{username}}! 👋 Thanks for following us..."></textarea>
+                            <small class="text-muted">Use {{username}}, {{fullname}}, {{followers}} for personalization</small>
+                        </div>
+                        <div class="form-group">
+                            <label>Available Variables</label>
+                            <div>
+                                <span class="variable-tag" onclick="insertVariable('{{username}}')">{{username}}</span>
+                                <span class="variable-tag" onclick="insertVariable('{{fullname}}')">{{fullname}}</span>
+                                <span class="variable-tag" onclick="insertVariable('{{followers}}')">{{followers}}</span>
+                                <span class="variable-tag" onclick="insertVariable('{{date}}')">{{date}}</span>
+                                <span class="variable-tag" onclick="insertVariable('{{time}}')">{{time}}</span>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="includeMedia"> Include Media
+                            </label>
+                        </div>
+                        <div id="mediaUpload" style="display: none;">
+                            <div class="form-group">
+                                <label>Upload Image/Video</label>
+                                <input type="file" class="form-control" accept="image/*,video/*">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="saveTemplate()">
+                            <i class="fas fa-save"></i> Save Template
+                        </button>
+                        <button class="btn btn-secondary" onclick="previewTemplate()">
+                            <i class="fas fa-eye"></i> Preview
+                        </button>
+                    </div>
+
+                    <div class="template-preview" id="templatePreview" style="display: none;">
+                        <h4>Preview:</h4>
+                        <div id="previewContent"></div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Saved Templates</h3>
+                        <div id="templatesList">
+                            <p style="color: var(--text-muted); text-align: center;">No templates created yet</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Scheduling & Rules Section -->
+                <div class="section" id="scheduling">
+                    <h2><i class="fas fa-clock"></i> Scheduling & Sending Rules</h2>
+                    
+                    <div class="card">
+                        <h3>Sending Limits & Safety</h3>
+                        <div class="form-group">
+                            <label for="dailyLimit">Daily Message Limit</label>
+                            <input type="number" id="dailyLimit" class="form-control" value="50" min="1" max="200">
+                            <small class="text-muted">Recommended: 50-100 messages per day for new accounts</small>
+                        </div>
+                        <div class="form-group">
+                            <label for="hourlyLimit">Hourly Message Limit</label>
+                            <input type="number" id="hourlyLimit" class="form-control" value="10" min="1" max="50">
+                        </div>
+                        <div class="form-group">
+                            <label for="minDelay">Minimum Delay Between Messages (seconds)</label>
+                            <input type="number" id="minDelay" class="form-control" value="30" min="10" max="300">
+                        </div>
+                        <div class="form-group">
+                            <label for="maxDelay">Maximum Delay Between Messages (seconds)</label>
+                            <input type="number" id="maxDelay" class="form-control" value="120" min="30" max="600">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Active Hours</h3>
+                        <div class="form-group">
+                            <label for="startTime">Start Time</label>
+                            <input type="time" id="startTime" class="form-control" value="08:00">
+                        </div>
+                        <div class="form-group">
+                            <label for="endTime">End Time</label>
+                            <input type="time" id="endTime" class="form-control" value="21:00">
+                        </div>
+                        <div class="form-group">
+                            <label>Active Days</label>
+                            <div>
+                                <label><input type="checkbox" checked> Monday</label>
+                                <label><input type="checkbox" checked> Tuesday</label>
+                                <label><input type="checkbox" checked> Wednesday</label>
+                                <label><input type="checkbox" checked> Thursday</label>
+                                <label><input type="checkbox" checked> Friday</label>
+                                <label><input type="checkbox"> Saturday</label>
+                                <label><input type="checkbox"> Sunday</label>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Smart Features</h3>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="randomizeDelays" checked> Randomize delays for human-like behavior
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="skipSentUsers" checked> Skip users who were already contacted
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="respectTimezone"> Respect user's timezone
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" onclick="saveSchedulingRules()">
+                            <i class="fas fa-save"></i> Save Rules
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Auto Replies Section -->
+                <div class="section" id="automation">
+                    <h2><i class="fas fa-robot"></i> Automated Replies</h2>
+                    
+                    <div class="card">
+                        <h3>Create Reply Rule</h3>
+                        <div class="form-group">
+                            <label for="ruleName">Rule Name</label>
+                            <input type="text" id="ruleName" class="form-control" placeholder="Thank You Reply">
+                        </div>
+                        <div class="form-group">
+                            <label for="triggerKeywords">Trigger Keywords (comma separated)</label>
+                            <input type="text" id="triggerKeywords" class="form-control" placeholder="thanks, thank you, thx">
+                        </div>
+                        <div class="form-group">
+                            <label for="replyMessage">Auto Reply Message</label>
+                            <textarea id="replyMessage" class="form-control" rows="4" placeholder="You're welcome! Is there anything else I can help you with?"></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="replyDelay">Reply Delay (minutes)</label>
+                            <input type="number" id="replyDelay" class="form-control" value="5" min="1" max="60">
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="ruleActive" checked> Active
+                            </label>
+                        </div>
+                        <button class="btn btn-primary" onclick="saveReplyRule()">
+                            <i class="fas fa-plus"></i> Add Rule
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Active Reply Rules</h3>
+                        <div id="replyRulesList">
+                            <p style="color: var(--text-muted); text-align: center;">No reply rules created yet</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Campaigns Section -->
+                <div class="section" id="campaigns">
+                    <h2><i class="fas fa-paper-plane"></i> Message Campaigns</h2>
+                    
+                    <div class="card">
+                        <h3>Create New Campaign</h3>
+                        <div class="form-group">
+                            <label for="campaignName">Campaign Name</label>
+                            <input type="text" id="campaignName" class="form-control" placeholder="Black Friday Promotion">
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignTemplate">Message Template</label>
+                            <select id="campaignTemplate" class="form-control">
+                                <option value="">Select a template...</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="campaignAudience">Target Audience</label>
+                            <select id="campaignAudience" class="form-control">
+                                <option value="all">All Users</option>
+                                <option value="new">New Followers</option>
+                                <option value="active">Active Users</option>
+                                <option value="custom">Custom Selection</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="scheduleType">Schedule Type</label>
+                            <select id="scheduleType" class="form-control">
+                                <option value="immediate">Send Immediately</option>
+                                <option value="scheduled">Schedule for Later</option>
+                                <option value="drip">Drip Campaign</option>
+                            </select>
+                        </div>
+                        <div id="scheduleSettings" style="display: none;">
+                            <div class="form-group">
+                                <label for="scheduleDate">Schedule Date & Time</label>
+                                <input type="datetime-local" id="scheduleDate" class="form-control">
+                            </div>
+                        </div>
+                        <button class="btn btn-primary" onclick="createCampaign()">
+                            <i class="fas fa-rocket"></i> Create Campaign
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Active Campaigns</h3>
+                        <div id="campaignsList">
+                            <p style="color: var(--text-muted); text-align: center;">No campaigns created yet</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Analytics Section -->
+                <div class="section" id="analytics">
+                    <h2><i class="fas fa-chart-bar"></i> Analytics & Logs</h2>
+                    
+                    <div class="stats-grid">
+                        <div class="stat-card primary">
+                            <div class="icon"><i class="fas fa-paper-plane"></i></div>
+                            <div class="number">1,234</div>
+                            <div class="label">Total Messages Sent</div>
+                        </div>
+                        <div class="stat-card success">
+                            <div class="icon"><i class="fas fa-eye"></i></div>
+                            <div class="number">89%</div>
+                            <div class="label">Open Rate</div>
+                        </div>
+                        <div class="stat-card warning">
+                            <div class="icon"><i class="fas fa-reply"></i></div>
+                            <div class="number">23%</div>
+                            <div class="label">Response Rate</div>
+                        </div>
+                        <div class="stat-card danger">
+                            <div class="icon"><i class="fas fa-ban"></i></div>
+                            <div class="number">12</div>
+                            <div class="label">Blocked/Failed</div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Message Logs</h3>
+                        <div class="form-group">
+                            <label for="logFilter">Filter Logs</label>
+                            <select id="logFilter" class="form-control">
+                                <option value="all">All Messages</option>
+                                <option value="success">Successful</option>
+                                <option value="failed">Failed</option>
+                                <option value="pending">Pending</option>
+                            </select>
+                        </div>
+                        <div style="max-height: 400px; overflow-y: auto;" id="messageLog">
+                            <div class="log-entry log-success">
+                                <strong>Success:</strong> Message sent to @user123
+                                <span style="float: right; color: var(--text-muted);">2 minutes ago</span>
+                            </div>
+                            <div class="log-entry log-error">
+                                <strong>Failed:</strong> Unable to send to @user456 - User not found
+                                <span style="float: right; color: var(--text-muted);">5 minutes ago</span>
+                            </div>
+                            <div class="log-entry log-info">
+                                <strong>Info:</strong> Campaign "Welcome Messages" started
+                                <span style="float: right; color: var(--text-muted);">10 minutes ago</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Export Data</h3>
+                        <button class="btn btn-primary" onclick="exportLogs()">
+                            <i class="fas fa-download"></i> Export Logs (CSV)
+                        </button>
+                        <button class="btn btn-secondary" onclick="exportAnalytics()">
+                            <i class="fas fa-chart-line"></i> Export Analytics
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Account Management Section -->
+                <div class="section" id="accounts">
+                    <h2><i class="fas fa-user-cog"></i> Multi-Account Management</h2>
+                    
+                    <div class="card">
+                        <h3>Add New Account</h3>
+                        <div class="form-group">
+                            <label for="newAccountUsername">Username</label>
+                            <input type="text" id="newAccountUsername" class="form-control" placeholder="account_username">
+                        </div>
+                        <div class="form-group">
+                            <label for="newAccountSession">Session Data</label>
+                            <textarea id="newAccountSession" class="form-control" rows="3" placeholder="Session cookie or token..."></textarea>
+                        </div>
+                        <div class="form-group">
+                            <label for="accountNickname">Nickname (Optional)</label>
+                            <input type="text" id="accountNickname" class="form-control" placeholder="Business Account">
+                        </div>
+                        <button class="btn btn-primary" onclick="addAccount()">
+                            <i class="fas fa-plus"></i> Add Account
+                        </button>
+                    </div>
+
+                    <div class="card">
+                        <h3>Managed Accounts</h3>
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Nickname</th>
+                                    <th>Status</th>
+                                    <th>Messages Today</th>
+                                    <th>Actions</th>
+                                </tr>
+                            </thead>
+                            <tbody id="accountsList">
+                                <tr>
+                                    <td colspan="5" style="text-align: center; color: var(--text-muted);">
+                                        No accounts added yet
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+
+                <!-- Settings Section -->
+                <div class="section" id="settings">
+                    <h2><i class="fas fa-cog"></i> Settings</h2>
+                    
+                    <div class="card">
+                        <h3>General Settings</h3>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="enableNotifications" checked> Enable Notifications
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="enableSounds"> Enable Sound Alerts
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="language">Language</label>
+                            <select id="language" class="form-control">
+                                <option value="en">English</option>
+                                <option value="es">Español</option>
+                                <option value="fr">Français</option>
+                                <option value="de">Deutsch</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Safety & Compliance</h3>
+                        <div class="alert alert-warning">
+                            <i class="fas fa-exclamation-triangle"></i>
+                            <strong>Important:</strong> Always comply with Instagram's Terms of Service and Community Guidelines.
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="respectLimits" checked> Respect Instagram's rate limits
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label>
+                                <input type="checkbox" id="enableBackup" checked> Enable automatic data backup
+                            </label>
+                        </div>
+                        <div class="form-group">
+                            <label for="backupInterval">Backup Interval (hours)</label>
+                            <input type="number" id="backupInterval" class="form-control" value="24" min="1" max="168">
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <h3>Data Management</h3>
+                        <button class="btn btn-warning" onclick="clearLogs()">
+                            <i class="fas fa-trash"></i> Clear Logs
+                        </button>
+                        <button class="btn btn-danger" onclick="resetSettings()">
+                            <i class="fas fa-undo"></i> Reset All Settings
+                        </button>
+                        <button class="btn btn-primary" onclick="saveSettings()">
+                            <i class="fas fa-save"></i> Save Settings
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modals -->
+    <div id="confirmModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeModal('confirmModal')">&times;</span>
+            <h3 id="modalTitle">Confirm Action</h3>
+            <p id="modalMessage">Are you sure you want to proceed?</p>
+            <div style="text-align: right; margin-top: 1rem;">
+                <button class="btn btn-secondary" onclick="closeModal('confirmModal')">Cancel</button>
+                <button class="btn btn-primary" id="confirmButton">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables
+        let currentAccount = null;
+        let messageTemplates = [];
+        let targetAudience = [];
+        let campaigns = [];
+        let messageLogs = [];
+        let accounts = [];
+        let settings = {
+            dailyLimit: 50,
+            hourlyLimit: 10,
+            minDelay: 30,
+            maxDelay: 120,
+            activeHours: { start: '08:00', end: '21:00' },
+            activeDays: [1, 2, 3, 4, 5], // Monday to Friday
+            enableNotifications: true,
+            enableSounds: false,
+            language: 'en'
+        };
+
+        // Navigation
+        document.addEventListener('DOMContentLoaded', function() {
+            // Navigation event listeners
+            document.querySelectorAll('.nav-item').forEach(item => {
+                item.addEventListener('click', function() {
+                    const section = this.dataset.section;
+                    showSection(section);
+                    
+                    // Update active nav item
+                    document.querySelectorAll('.nav-item').forEach(nav => nav.classList.remove('active'));
+                    this.classList.add('active');
+                });
+            });
+
+            // Load saved data
+            loadFromStorage();
+            updateDashboard();
+        });
+
+        function showSection(sectionId) {
+            // Hide all sections
+            document.querySelectorAll('.section').forEach(section => {
+                section.classList.remove('active');
+            });
+            
+            // Show selected section
+            document.getElementById(sectionId).classList.add('active');
+        }
+
+        // Authentication functions
+        function authenticateInstagram() {
+            const authMethod = document.querySelector('input[name="authMethod"]:checked').value;
+            const sessionData = document.getElementById('sessionData').value;
+            const username = document.getElementById('username').value;
+            const proxyUrl = document.getElementById('proxyUrl').value;
+
+            if (!sessionData || !username) {
+                alert('Please provide session data and username');
+                return;
+            }
+
+            // Simulate authentication process
+            document.getElementById('connectionStatus').textContent = 'Connecting...';
+            document.querySelector('.status-indicator').className = 'status-indicator status-pending';
+
+            setTimeout(() => {
+                // Simulate successful connection
+                document.getElementById('connectionStatus').textContent = 'Connected';
+                document.querySelector('.status-indicator').className = 'status-indicator status-online';
+                
+                currentAccount = {
+                    username: username,
+                    authMethod: authMethod,
+                    sessionData: sessionData,
+                    proxyUrl: proxyUrl,
+                    connectedAt: new Date()
+                };
+
+                addLogEntry('success', `Successfully connected to Instagram account @${username}`);
+                saveToStorage();
+            }, 2000);
+        }
+
+        function testConnection() {
+            if (!currentAccount) {
+                alert('Please authenticate first');
+                return;
+            }
+
+            addLogEntry('info', 'Testing connection...');
+            
+            setTimeout(() => {
+                addLogEntry('success', 'Connection test successful');
+            }, 1000);
+        }
+
+        // Audience management functions
+        function toggleAudienceMethod() {
+            const method = document.getElementById('audienceMethod').value;
+            
+            // Hide all method-specific sections
+            document.getElementById('manualInput').style.display = 'none';
+            document.getElementById('csvUpload').style.display = 'none';
+            document.getElementById('extractionSettings').style.display = 'none';
+
+            // Show relevant section
+            switch(method) {
+                case 'manual':
+                    document.getElementById('manualInput').style.display = 'block';
+                    break;
+                case 'csv':
+                    document.getElementById('csvUpload').style.display = 'block';
+                    break;
+                case 'followers':
+                case 'likers':
+                case 'commenters':
+                case 'story_viewers':
+                    document.getElementById('extractionSettings').style.display = 'block';
+                    break;
+            }
+        }
+
+        function addAudience() {
+            const method = document.getElementById('audienceMethod').value;
+            let newUsers = [];
+
+            switch(method) {
+                case 'manual':
+                    const usernames = document.getElementById('usernames').value.split('\n').filter(u => u.trim());
+                    newUsers = usernames.map(username => ({
+                        username: username.trim(),
+                        status: 'pending',
+                        addedAt: new Date(),
+                        method: 'manual'
+                    }));
+                    break;
+                case 'csv':
+                    // CSV processing would be handled by handleCSVUpload
+                    alert('Please upload a CSV file first');
+                    return;
+                default:
+                    // Extraction methods
+                    const postUrl = document.getElementById('targetPost').value;
+                    const limit = document.getElementById('extractLimit').value;
+                    
+                    if (!postUrl && (method === 'likers' || method === 'commenters')) {
+                        alert('Please provide a post URL');
+                        return;
+                    }
+                    
+                    // Simulate extraction
+                    addLogEntry('info', `Starting ${method} extraction...`);
+                    simulateExtraction(method, limit);
+                    return;
+            }
+
+            // Add users to audience
+            newUsers.forEach(user => {
+                if (!targetAudience.find(u => u.username === user.username)) {
+                    targetAudience.push(user);
+                }
+            });
+
+            updateAudienceList();
+            saveToStorage();
+            addLogEntry('success', `Added ${newUsers.length} users to audience`);
+        }
+
+        function handleCSVUpload(input) {
+            const file = input.files[0];
+            if (!file) return;
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const csv = e.target.result;
+                const lines = csv.split('\n').slice(1); // Skip header
+                const users = lines.map(line => {
+                    const [username, fullName, followers] = line.split(',');
+                    return {
+                        username: username?.trim(),
+                        fullName: fullName?.trim(),
+                        followers: parseInt(followers) || 0,
+                        status: 'pending',
+                        addedAt: new Date(),
+                        method: 'csv'
+                    };
+                }).filter(user => user.username);
+
+                users.forEach(user => {
+                    if (!targetAudience.find(u => u.username === user.username)) {
+                        targetAudience.push(user);
+                    }
+                });
+
+                updateAudienceList();
+                saveToStorage();
+                addLogEntry('success', `Imported ${users.length} users from CSV`);
+            };
+            reader.readAsText(file);
+        }
+
+        function simulateExtraction(method, limit) {
+            // Simulate API call delay
+            setTimeout(() => {
+                const sampleUsers = [];
+                for (let i = 1; i <= Math.min(limit, 20); i++) {
+                    sampleUsers.push({
+                        username: `user${Math.floor(Math.random() * 1000)}`,
+                        status: 'pending',
+                        addedAt: new Date(),
+                        method: method
+                    });
+                }
+
+                sampleUsers.forEach(user => {
+                    if (!targetAudience.find(u => u.username === user.username)) {
+                        targetAudience.push(user);
+                    }
+                });
+
+                updateAudienceList();
+                saveToStorage();
+                addLogEntry('success', `Extracted ${sampleUsers.length} users using ${method} method`);
+            }, 3000);
+        }
+
+        function updateAudienceList() {
+            const tbody = document.getElementById('audienceList');
+            const countBadge = document.getElementById('audienceCount');
+            
+            countBadge.textContent = targetAudience.length;
+
+            if (targetAudience.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="4" style="text-align: center; color: var(--text-muted);">
+                            No users added yet
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = targetAudience.map(user => `
+                <tr>
+                    <td>@${user.username}</td>
+                    <td><span class="badge badge-${user.status === 'sent' ? 'success' : user.status === 'failed' ? 'danger' : 'secondary'}">${user.status}</span></td>
+                    <td>${user.lastContact ? new Date(user.lastContact).toLocaleDateString() : 'Never'}</td>
+                    <td>
+                        <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="removeUser('${user.username}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function removeUser(username) {
+            targetAudience = targetAudience.filter(user => user.username !== username);
+            updateAudienceList();
+            saveToStorage();
+        }
+
+        function validateAudience() {
+            addLogEntry('info', 'Validating audience...');
+            
+            // Simulate validation process
+            setTimeout(() => {
+                const validCount = Math.floor(targetAudience.length * 0.85);
+                const invalidCount = targetAudience.length - validCount;
+                
+                addLogEntry('success', `Validation complete: ${validCount} valid, ${invalidCount} invalid users`);
+            }, 2000);
+        }
+
+        // Template functions
+        function insertVariable(variable) {
+            const textarea = document.getElementById('templateMessage');
+            const cursorPos = textarea.selectionStart;
+            const textBefore = textarea.value.substring(0, cursorPos);
+            const textAfter = textarea.value.substring(cursorPos);
+            
+            textarea.value = textBefore + variable + textAfter;
+            textarea.focus();
+            textarea.setSelectionRange(cursorPos + variable.length, cursorPos + variable.length);
+        }
+
+        function saveTemplate() {
+            const name = document.getElementById('templateName').value;
+            const message = document.getElementById('templateMessage').value;
+            const includeMedia = document.getElementById('includeMedia').checked;
+
+            if (!name || !message) {
+                alert('Please provide template name and message');
+                return;
+            }
+
+            const template = {
+                id: Date.now().toString(),
+                name: name,
+                message: message,
+                includeMedia: includeMedia,
+                createdAt: new Date()
+            };
+
+            messageTemplates.push(template);
+            updateTemplatesList();
+            updateCampaignTemplates();
+            saveToStorage();
+            
+            // Clear form
+            document.getElementById('templateName').value = '';
+            document.getElementById('templateMessage').value = '';
+            document.getElementById('includeMedia').checked = false;
+            
+            addLogEntry('success', `Template "${name}" saved successfully`);
+        }
+
+        function previewTemplate() {
+            const message = document.getElementById('templateMessage').value;
+            if (!message) {
+                alert('Please enter a message to preview');
+                return;
+            }
+
+            // Replace variables with sample data
+            let preview = message
+                .replace(/\{\{username\}\}/g, 'john_doe')
+                .replace(/\{\{fullname\}\}/g, 'John Doe')
+                .replace(/\{\{followers\}\}/g, '1,234')
+                .replace(/\{\{date\}\}/g, new Date().toLocaleDateString())
+                .replace(/\{\{time\}\}/g, new Date().toLocaleTimeString());
+
+            document.getElementById('previewContent').innerHTML = preview;
+            document.getElementById('templatePreview').style.display = 'block';
+        }
+
+        function updateTemplatesList() {
+            const container = document.getElementById('templatesList');
+            
+            if (messageTemplates.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">No templates created yet</p>';
+                return;
+            }
+
+            container.innerHTML = messageTemplates.map(template => `
+                <div class="schedule-item">
+                    <div>
+                        <strong>${template.name}</strong>
+                        <br>
+                        <small style="color: var(--text-muted);">${template.message.substring(0, 100)}...</small>
+                    </div>
+                    <div>
+                        <button class="btn btn-secondary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; margin-right: 0.5rem;" onclick="editTemplate('${template.id}')">
+                            <i class="fas fa-edit"></i>
+                        </button>
+                        <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="deleteTemplate('${template.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function updateCampaignTemplates() {
+            const select = document.getElementById('campaignTemplate');
+            select.innerHTML = '<option value="">Select a template...</option>' + 
+                messageTemplates.map(template => `<option value="${template.id}">${template.name}</option>`).join('');
+        }
+
+        function deleteTemplate(templateId) {
+            messageTemplates = messageTemplates.filter(t => t.id !== templateId);
+            updateTemplatesList();
+            updateCampaignTemplates();
+            saveToStorage();
+        }
+
+        // Scheduling functions
+        function saveSchedulingRules() {
+            settings.dailyLimit = parseInt(document.getElementById('dailyLimit').value);
+            settings.hourlyLimit = parseInt(document.getElementById('hourlyLimit').value);
+            settings.minDelay = parseInt(document.getElementById('minDelay').value);
+            settings.maxDelay = parseInt(document.getElementById('maxDelay').value);
+            settings.activeHours.start = document.getElementById('startTime').value;
+            settings.activeHours.end = document.getElementById('endTime').value;
+
+            saveToStorage();
+            addLogEntry('success', 'Scheduling rules saved successfully');
+        }
+
+        // Auto reply functions
+        function saveReplyRule() {
+            const name = document.getElementById('ruleName').value;
+            const keywords = document.getElementById('triggerKeywords').value;
+            const message = document.getElementById('replyMessage').value;
+            const delay = parseInt(document.getElementById('replyDelay').value);
+            const active = document.getElementById('ruleActive').checked;
+
+            if (!name || !keywords || !message) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const rule = {
+                id: Date.now().toString(),
+                name: name,
+                keywords: keywords.split(',').map(k => k.trim()),
+                message: message,
+                delay: delay,
+                active: active,
+                createdAt: new Date()
+            };
+
+            // Add to rules array (would be stored globally)
+            if (!window.replyRules) window.replyRules = [];
+            window.replyRules.push(rule);
+
+            updateReplyRulesList();
+            saveToStorage();
+            
+            // Clear form
+            document.getElementById('ruleName').value = '';
+            document.getElementById('triggerKeywords').value = '';
+            document.getElementById('replyMessage').value = '';
+            document.getElementById('replyDelay').value = '5';
+            document.getElementById('ruleActive').checked = true;
+            
+            addLogEntry('success', `Reply rule "${name}" created successfully`);
+        }
+
+        function updateReplyRulesList() {
+            const container = document.getElementById('replyRulesList');
+            const rules = window.replyRules || [];
+            
+            if (rules.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">No reply rules created yet</p>';
+                return;
+            }
+
+            container.innerHTML = rules.map(rule => `
+                <div class="schedule-item">
+                    <div>
+                        <strong>${rule.name}</strong> ${rule.active ? '<span class="badge badge-success">Active</span>' : '<span class="badge badge-secondary">Inactive</span>'}
+                        <br>
+                        <small style="color: var(--text-muted);">Keywords: ${rule.keywords.join(', ')}</small>
+                        <br>
+                        <small style="color: var(--text-muted);">Reply: ${rule.message.substring(0, 50)}...</small>
+                    </div>
+                    <div>
+                        <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="deleteReplyRule('${rule.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function deleteReplyRule(ruleId) {
+            if (window.replyRules) {
+                window.replyRules = window.replyRules.filter(r => r.id !== ruleId);
+                updateReplyRulesList();
+                saveToStorage();
+            }
+        }
+
+        // Campaign functions
+        function createCampaign() {
+            const name = document.getElementById('campaignName').value;
+            const templateId = document.getElementById('campaignTemplate').value;
+            const audience = document.getElementById('campaignAudience').value;
+            const scheduleType = document.getElementById('scheduleType').value;
+
+            if (!name || !templateId || !audience) {
+                alert('Please fill in all required fields');
+                return;
+            }
+
+            const campaign = {
+                id: Date.now().toString(),
+                name: name,
+                templateId: templateId,
+                audience: audience,
+                scheduleType: scheduleType,
+                status: 'created',
+                createdAt: new Date(),
+                stats: {
+                    sent: 0,
+                    failed: 0,
+                    pending: targetAudience.length
+                }
+            };
+
+            campaigns.push(campaign);
+            updateCampaignsList();
+            saveToStorage();
+            
+            addLogEntry('success', `Campaign "${name}" created successfully`);
+        }
+
+        function updateCampaignsList() {
+            const container = document.getElementById('campaignsList');
+            
+            if (campaigns.length === 0) {
+                container.innerHTML = '<p style="color: var(--text-muted); text-align: center;">No campaigns created yet</p>';
+                return;
+            }
+
+            container.innerHTML = campaigns.map(campaign => `
+                <div class="card" style="margin-bottom: 1rem;">
+                    <h4>${campaign.name} <span class="badge badge-${campaign.status === 'active' ? 'success' : campaign.status === 'completed' ? 'secondary' : 'warning'}">${campaign.status}</span></h4>
+                    <p><strong>Template:</strong> ${messageTemplates.find(t => t.id === campaign.templateId)?.name || 'Unknown'}</p>
+                    <p><strong>Audience:</strong> ${campaign.audience}</p>
+                    <div class="stats-grid" style="grid-template-columns: repeat(3, 1fr); margin: 1rem 0;">
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--success-color);">${campaign.stats.sent}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Sent</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--warning-color);">${campaign.stats.pending}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Pending</div>
+                        </div>
+                        <div style="text-align: center;">
+                            <div style="font-size: 1.5rem; font-weight: bold; color: var(--danger-color);">${campaign.stats.failed}</div>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">Failed</div>
+                        </div>
+                    </div>
+                    <div>
+                        <button class="btn btn-primary" onclick="startCampaign('${campaign.id}')" ${campaign.status === 'active' ? 'disabled' : ''}>
+                            <i class="fas fa-play"></i> Start
+                        </button>
+                        <button class="btn btn-warning" onclick="pauseCampaign('${campaign.id}')" ${campaign.status !== 'active' ? 'disabled' : ''}>
+                            <i class="fas fa-pause"></i> Pause
+                        </button>
+                        <button class="btn btn-danger" onclick="deleteCampaign('${campaign.id}')">
+                            <i class="fas fa-trash"></i> Delete
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function startCampaign(campaignId) {
+            const campaign = campaigns.find(c => c.id === campaignId);
+            if (!campaign) return;
+
+            campaign.status = 'active';
+            campaign.startedAt = new Date();
+            
+            updateCampaignsList();
+            saveToStorage();
+            addLogEntry('success', `Campaign "${campaign.name}" started`);
+            
+            // Simulate sending messages
+            simulateCampaignExecution(campaign);
+        }
+
+        function simulateCampaignExecution(campaign) {
+            const template = messageTemplates.find(t => t.id === campaign.templateId);
+            if (!template) return;
+
+            let sent = 0;
+            const totalToSend = Math.min(targetAudience.length, 10); // Limit for demo
+
+            const sendInterval = setInterval(() => {
+                if (sent >= totalToSend || campaign.status !== 'active') {
+                    clearInterval(sendInterval);
+                    campaign.status = 'completed';
+                    updateCampaignsList();
+                    updateDashboard();
+                    return;
+                }
+
+                // Simulate sending to a user
+                const user = targetAudience[sent];
+                const success = Math.random() > 0.1; // 90% success rate
+
+                if (success) {
+                    campaign.stats.sent++;
+                    campaign.stats.pending--;
+                    user.status = 'sent';
+                    user.lastContact = new Date();
+                    addLogEntry('success', `Message sent to @${user.username} via campaign "${campaign.name}"`);
+                } else {
+                    campaign.stats.failed++;
+                    campaign.stats.pending--;
+                    user.status = 'failed';
+                    addLogEntry('error', `Failed to send message to @${user.username}`);
+                }
+
+                sent++;
+                updateCampaignsList();
+                updateAudienceList();
+                updateDashboard();
+                
+            }, Math.random() * 3000 + 2000); // Random delay between 2-5 seconds
+        }
+
+        function pauseCampaign(campaignId) {
+            const campaign = campaigns.find(c => c.id === campaignId);
+            if (!campaign) return;
+
+            campaign.status = 'paused';
+            updateCampaignsList();
+            saveToStorage();
+            addLogEntry('info', `Campaign "${campaign.name}" paused`);
+        }
+
+        function deleteCampaign(campaignId) {
+            campaigns = campaigns.filter(c => c.id !== campaignId);
+            updateCampaignsList();
+            saveToStorage();
+        }
+
+        // Utility functions
+        function addLogEntry(type, message) {
+            const logEntry = {
+                type: type,
+                message: message,
+                timestamp: new Date()
+            };
+
+            messageLogs.unshift(logEntry);
+            
+            // Keep only last 100 logs
+            if (messageLogs.length > 100) {
+                messageLogs = messageLogs.slice(0, 100);
+            }
+
+            updateRecentActivity();
+            updateMessageLog();
+            saveToStorage();
+        }
+
+        function updateRecentActivity() {
+            const container = document.getElementById('recentActivity');
+            const recentLogs = messageLogs.slice(0, 5);
+
+            container.innerHTML = recentLogs.map(log => `
+                <div class="log-entry log-${log.type}">
+                    <strong>${log.type.charAt(0).toUpperCase() + log.type.slice(1)}:</strong> ${log.message}
+                    <span style="float: right; color: var(--text-muted);">${getTimeAgo(log.timestamp)}</span>
+                </div>
+            `).join('');
+        }
+
+        function updateMessageLog() {
+            const container = document.getElementById('messageLog');
+            const filter = document.getElementById('logFilter')?.value || 'all';
+            
+            let filteredLogs = messageLogs;
+            if (filter !== 'all') {
+                filteredLogs = messageLogs.filter(log => log.type === filter);
+            }
+
+            container.innerHTML = filteredLogs.slice(0, 20).map(log => `
+                <div class="log-entry log-${log.type}">
+                    <strong>${log.type.charAt(0).toUpperCase() + log.type.slice(1)}:</strong> ${log.message}
+                    <span style="float: right; color: var(--text-muted);">${getTimeAgo(log.timestamp)}</span>
+                </div>
+            `).join('');
+        }
+
+        function updateDashboard() {
+            // Calculate stats
+            const totalSent = messageLogs.filter(log => log.type === 'success' && log.message.includes('sent')).length;
+            const totalFailed = messageLogs.filter(log => log.type === 'error').length;
+            const totalMessages = totalSent + totalFailed;
+            const successRate = totalMessages > 0 ? Math.round((totalSent / totalMessages) * 100) : 0;
+            const pending = targetAudience.filter(user => user.status === 'pending').length;
+
+            // Update dashboard stats
+            document.getElementById('totalSent').textContent = totalSent;
+            document.getElementById('successRate').textContent = successRate + '%';
+            document.getElementById('pending').textContent = pending;
+            document.getElementById('failed').textContent = totalFailed;
+        }
+
+        function getTimeAgo(date) {
+            const now = new Date();
+            const diffInSeconds = Math.floor((now - new Date(date)) / 1000);
+
+            if (diffInSeconds < 60) return 'Just now';
+            if (diffInSeconds < 3600) return Math.floor(diffInSeconds / 60) + ' minutes ago';
+            if (diffInSeconds < 86400) return Math.floor(diffInSeconds / 3600) + ' hours ago';
+            return Math.floor(diffInSeconds / 86400) + ' days ago';
+        }
+
+        // Storage functions
+        function saveToStorage() {
+            const data = {
+                currentAccount,
+                messageTemplates,
+                targetAudience,
+                campaigns,
+                messageLogs,
+                accounts,
+                settings,
+                replyRules: window.replyRules || []
+            };
+            localStorage.setItem('instagramDMTool', JSON.stringify(data));
+        }
+
+        function loadFromStorage() {
+            const data = localStorage.getItem('instagramDMTool');
+            if (data) {
+                const parsed = JSON.parse(data);
+                currentAccount = parsed.currentAccount || null;
+                messageTemplates = parsed.messageTemplates || [];
+                targetAudience = parsed.targetAudience || [];
+                campaigns = parsed.campaigns || [];
+                messageLogs = parsed.messageLogs || [];
+                accounts = parsed.accounts || [];
+                settings = { ...settings, ...parsed.settings };
+                window.replyRules = parsed.replyRules || [];
+
+                // Update UI
+                updateTemplatesList();
+                updateCampaignTemplates();
+                updateAudienceList();
+                updateCampaignsList();
+                updateReplyRulesList();
+                updateRecentActivity();
+                updateMessageLog();
+
+                // Update connection status if account exists
+                if (currentAccount) {
+                    document.getElementById('connectionStatus').textContent = 'Connected';
+                    document.querySelector('.status-indicator').className = 'status-indicator status-online';
+                    document.getElementById('username').value = currentAccount.username;
+                }
+            }
+        }
+
+        // Export functions
+        function exportLogs() {
+            const csvContent = "data:text/csv;charset=utf-8," + 
+                "Timestamp,Type,Message\n" +
+                messageLogs.map(log => `"${log.timestamp}","${log.type}","${log.message}"`).join('\n');
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", "instagram_dm_logs.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function exportAnalytics() {
+            const analytics = {
+                totalMessages: messageLogs.length,
+                successfulMessages: messageLogs.filter(log => log.type === 'success').length,
+                failedMessages: messageLogs.filter(log => log.type === 'error').length,
+                totalAudience: targetAudience.length,
+                activeCampaigns: campaigns.filter(c => c.status === 'active').length,
+                exportDate: new Date()
+            };
+
+            const dataStr = "data:text/json;charset=utf-8," + encodeURIComponent(JSON.stringify(analytics, null, 2));
+            const link = document.createElement("a");
+            link.setAttribute("href", dataStr);
+            link.setAttribute("download", "instagram_dm_analytics.json");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        // Settings functions
+        function saveSettings() {
+            settings.enableNotifications = document.getElementById('enableNotifications').checked;
+            settings.enableSounds = document.getElementById('enableSounds').checked;
+            settings.language = document.getElementById('language').value;
+            
+            saveToStorage();
+            addLogEntry('success', 'Settings saved successfully');
+        }
+
+        function clearLogs() {
+            if (confirm('Are you sure you want to clear all logs? This action cannot be undone.')) {
+                messageLogs = [];
+                updateRecentActivity();
+                updateMessageLog();
+                updateDashboard();
+                saveToStorage();
+                addLogEntry('info', 'Logs cleared successfully');
+            }
+        }
+
+        function resetSettings() {
+            if (confirm('Are you sure you want to reset all settings to default? This action cannot be undone.')) {
+                settings = {
+                    dailyLimit: 50,
+                    hourlyLimit: 10,
+                    minDelay: 30,
+                    maxDelay: 120,
+                    activeHours: { start: '08:00', end: '21:00' },
+                    activeDays: [1, 2, 3, 4, 5],
+                    enableNotifications: true,
+                    enableSounds: false,
+                    language: 'en'
+                };
+                saveToStorage();
+                addLogEntry('info', 'Settings reset to default');
+            }
+        }
+
+        // Modal functions
+        function closeModal(modalId) {
+            document.getElementById(modalId).style.display = 'none';
+        }
+
+        // Account management functions
+        function addAccount() {
+            const username = document.getElementById('newAccountUsername').value;
+            const session = document.getElementById('newAccountSession').value;
+            const nickname = document.getElementById('accountNickname').value;
+
+            if (!username || !session) {
+                alert('Please provide username and session data');
+                return;
+            }
+
+            const account = {
+                id: Date.now().toString(),
+                username: username,
+                nickname: nickname || username,
+                sessionData: session,
+                status: 'inactive',
+                messagestoday: 0,
+                addedAt: new Date()
+            };
+
+            accounts.push(account);
+            updateAccountsList();
+            saveToStorage();
+            
+            // Clear form
+            document.getElementById('newAccountUsername').value = '';
+            document.getElementById('newAccountSession').value = '';
+            document.getElementById('accountNickname').value = '';
+            
+            addLogEntry('success', `Account @${username} added successfully`);
+        }
+
+        function updateAccountsList() {
+            const tbody = document.getElementById('accountsList');
+            
+            if (accounts.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align: center; color: var(--text-muted);">
+                            No accounts added yet
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = accounts.map(account => `
+                <tr>
+                    <td>@${account.username}</td>
+                    <td>${account.nickname}</td>
+                    <td><span class="badge badge-${account.status === 'active' ? 'success' : 'secondary'}">${account.status}</span></td>
+                    <td>${account.messagesToday || 0}</td>
+                    <td>
+                        <button class="btn btn-primary" style="padding: 0.25rem 0.5rem; font-size: 0.8rem; margin-right: 0.25rem;" onclick="switchAccount('${account.id}')">
+                            <i class="fas fa-exchange-alt"></i>
+                        </button>
+                        <button class="btn btn-danger" style="padding: 0.25rem 0.5rem; font-size: 0.8rem;" onclick="removeAccount('${account.id}')">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function switchAccount(accountId) {
+            const account = accounts.find(a => a.id === accountId);
+            if (!account) return;
+
+            currentAccount = {
+                username: account.username,
+                sessionData: account.sessionData,
+                authMethod: 'session'
+            };
+
+            document.getElementById('connectionStatus').textContent = 'Connected';
+            document.querySelector('.status-indicator').className = 'status-indicator status-online';
+            document.getElementById('username').value = account.username;
+            
+            saveToStorage();
+            addLogEntry('success', `Switched to account @${account.username}`);
+        }
+
+        function removeAccount(accountId) {
+            accounts = accounts.filter(a => a.id !== accountId);
+            updateAccountsList();
+            saveToStorage();
+        }
+
+        // Initialize media upload toggle
+        document.getElementById('includeMedia').addEventListener('change', function() {
+            document.getElementById('mediaUpload').style.display = this.checked ? 'block' : 'none';
+        });
+
+        // Initialize schedule type toggle
+        document.getElementById('scheduleType').addEventListener('change', function() {
+            document.getElementById('scheduleSettings').style.display = this.value === 'scheduled' ? 'block' : 'none';
+        });
+
+        // Initialize log filter
+        document.getElementById('logFilter').addEventListener('change', updateMessageLog);
+    </script>
+</body>
+</html>
